@@ -2,13 +2,11 @@ package tech.bluebits.perfectpitch.presentation.game
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import tech.bluebits.perfectpitch.domain.SoundPlayer
-import kotlin.random.Random
 
 class GameViewModel(private val soundPlayer: SoundPlayer) : ViewModel() {
 

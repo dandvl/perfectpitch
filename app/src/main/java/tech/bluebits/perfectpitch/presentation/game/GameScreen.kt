@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tech.bluebits.perfectpitch.domain.SoundPlayer
+import tech.bluebits.perfectpitch.ui.theme.PerfectPitchTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,11 +32,12 @@ fun GameScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        // Score Section
-        ScoreSection(
-            score = state.score,
-            totalAttempts = state.totalAttempts
-        )
+        if (state.totalAttempts > 0) {
+            ScoreSection(
+                score = state.score,
+                totalAttempts = state.totalAttempts
+            )
+        }
         
         // Title
         Text(
@@ -268,7 +270,7 @@ fun FeedbackSection(
 @Preview(showBackground = true)
 @Composable
 fun ScoreSectionPreview() {
-    MaterialTheme {
+    PerfectPitchTheme {
         ScoreSection(
             score = 7,
             totalAttempts = 10
@@ -279,7 +281,7 @@ fun ScoreSectionPreview() {
 @Preview(showBackground = true)
 @Composable
 fun ScoreSectionInitialPreview() {
-    MaterialTheme {
+    PerfectPitchTheme {
         ScoreSection(
             score = 0,
             totalAttempts = 0
@@ -290,7 +292,7 @@ fun ScoreSectionInitialPreview() {
 @Preview(showBackground = true)
 @Composable
 fun PlayButtonSectionPreview() {
-    MaterialTheme {
+    PerfectPitchTheme {
         PlayButtonSection(
             isLoading = false,
             isPlaying = false,
@@ -302,7 +304,7 @@ fun PlayButtonSectionPreview() {
 @Preview(showBackground = true)
 @Composable
 fun PlayButtonSectionLoadingPreview() {
-    MaterialTheme {
+    PerfectPitchTheme {
         PlayButtonSection(
             isLoading = true,
             isPlaying = false,
@@ -314,18 +316,20 @@ fun PlayButtonSectionLoadingPreview() {
 @Preview(showBackground = true)
 @Composable
 fun OptionsSectionPreview() {
-    MaterialTheme {
-        OptionsSection(
-            options = listOf(MusicalNote.C, MusicalNote.E, MusicalNote.G),
-            onNoteSelected = {}
-        )
+    PerfectPitchTheme {
+        Column {
+            OptionsSection(
+                options = listOf(MusicalNote.C, MusicalNote.E, MusicalNote.G),
+                onNoteSelected = {}
+            )
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun FeedbackSectionCorrectPreview() {
-    MaterialTheme {
+    PerfectPitchTheme {
         FeedbackSection(
             feedback = "Correct! The note was C",
             onDismiss = {}
@@ -337,7 +341,7 @@ fun FeedbackSectionCorrectPreview() {
 @Preview(showBackground = true)
 @Composable
 fun FeedbackSectionIncorrectPreview() {
-    MaterialTheme {
+    PerfectPitchTheme {
         FeedbackSection(
             feedback = "Wrong! The note was C",
             onDismiss = {}

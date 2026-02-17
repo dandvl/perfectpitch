@@ -52,7 +52,7 @@ class GameViewModel(private val soundPlayer: SoundPlayer) : ViewModel() {
         val newTotalAttempts = currentState.totalAttempts + 1
         
         val feedback = if (isCorrect) {
-            "Correct! The note was ${currentState.currentNote?.displayName}"
+            "Correct! The note was ${currentState.currentNote.displayName}"
         } else {
             "Wrong! The note was ${currentState.currentNote?.displayName}"
         }

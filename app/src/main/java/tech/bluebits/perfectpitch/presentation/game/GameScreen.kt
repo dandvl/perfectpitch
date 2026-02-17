@@ -7,9 +7,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -262,5 +262,85 @@ fun FeedbackSection(
                 Text("Continue")
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ScoreSectionPreview() {
+    MaterialTheme {
+        ScoreSection(
+            score = 7,
+            totalAttempts = 10
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ScoreSectionInitialPreview() {
+    MaterialTheme {
+        ScoreSection(
+            score = 0,
+            totalAttempts = 0
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PlayButtonSectionPreview() {
+    MaterialTheme {
+        PlayButtonSection(
+            isLoading = false,
+            isPlaying = false,
+            onPlayClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PlayButtonSectionLoadingPreview() {
+    MaterialTheme {
+        PlayButtonSection(
+            isLoading = true,
+            isPlaying = false,
+            onPlayClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun OptionsSectionPreview() {
+    MaterialTheme {
+        OptionsSection(
+            options = listOf(MusicalNote.C, MusicalNote.E, MusicalNote.G),
+            onNoteSelected = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun FeedbackSectionCorrectPreview() {
+    MaterialTheme {
+        FeedbackSection(
+            feedback = "Correct! The note was C",
+            onDismiss = {}
+        )
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun FeedbackSectionIncorrectPreview() {
+    MaterialTheme {
+        FeedbackSection(
+            feedback = "Wrong! The note was C",
+            onDismiss = {}
+        )
     }
 }

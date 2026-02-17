@@ -31,7 +31,7 @@ class SoundPlayer(private val context: Context) {
             e.printStackTrace()
         }
     }
-    
+
     fun release() {
         mediaPlayer?.release()
         mediaPlayer = null

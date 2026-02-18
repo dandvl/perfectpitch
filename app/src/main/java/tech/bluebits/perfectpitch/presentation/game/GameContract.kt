@@ -7,7 +7,9 @@ data class GameState(
     val score: Int = 0,
     val totalAttempts: Int = 0,
     val feedback: String? = null,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val isGameOver: Boolean = false,
+    val bestScore: Int = 0
 )
 
 sealed class GameIntent {
@@ -15,6 +17,7 @@ sealed class GameIntent {
     data class SelectNote(val note: MusicalNote) : GameIntent()
     object ResetGame : GameIntent()
     object DismissFeedback : GameIntent()
+    object PlayAgain : GameIntent()
 }
 
 enum class MusicalNote(val displayName: String, val resourceName: String) {

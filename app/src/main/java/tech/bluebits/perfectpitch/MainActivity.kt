@@ -10,6 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import tech.bluebits.perfectpitch.domain.SoundPlayer
+import tech.bluebits.perfectpitch.domain.ScoreManager
 import tech.bluebits.perfectpitch.presentation.game.GameScreen
 import tech.bluebits.perfectpitch.ui.theme.PerfectPitchTheme
 import tech.bluebits.perfectpitch.presentation.game.GameViewModel
@@ -17,14 +18,16 @@ import tech.bluebits.perfectpitch.presentation.game.GameViewModelFactory
 
 class MainActivity : ComponentActivity() {
     private lateinit var soundPlayer: SoundPlayer
+    private lateinit var scoreManager: ScoreManager
     private lateinit var gameViewModel: GameViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
         soundPlayer = SoundPlayer(this)
+        scoreManager = ScoreManager(this)
         
-        val factory = GameViewModelFactory(soundPlayer)
+        val factory = GameViewModelFactory(soundPlayer, scoreManager)
         gameViewModel = ViewModelProvider(this, factory)[GameViewModel::class.java]
         
         enableEdgeToEdge()

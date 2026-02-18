@@ -255,7 +255,7 @@ fun FeedbackSection(
             Button(
                 onClick = onDismiss,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isCorrect) 
+                    containerColor = if (isCorrect)
                         MaterialTheme.colorScheme.primary 
                     else 
                         MaterialTheme.colorScheme.error

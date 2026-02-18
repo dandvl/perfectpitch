@@ -8,10 +8,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModelProvider
 import tech.bluebits.perfectpitch.domain.SoundPlayer
 import tech.bluebits.perfectpitch.domain.ScoreManager
 import tech.bluebits.perfectpitch.presentation.game.GameScreen
+import tech.bluebits.perfectpitch.presentation.welcome.WelcomeScreen
 import tech.bluebits.perfectpitch.ui.theme.PerfectPitchTheme
 import tech.bluebits.perfectpitch.presentation.game.GameViewModel
 import tech.bluebits.perfectpitch.presentation.game.GameViewModelFactory
@@ -33,12 +35,23 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PerfectPitchTheme {
+                var showGameScreen by remember { mutableStateOf(false) }
+                val bestScore = scoreManager.getBestScore()
+                
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    GameScreen(
-                        soundPlayer = soundPlayer,
-                        modifier = Modifier.padding(innerPadding),
-                        viewModel = gameViewModel
-                    )
+                    if (showGameScreen) {
+                        GameScreen(
+                            soundPlayer = soundPlayer,
+                            modifier = Modifier.padding(innerPadding),
+                            viewModel = gameViewModel
+                        )
+                    } else {
+                        WelcomeScreen(
+                            bestScore = bestScore,
+                            onStartGame = { showGameScreen = true },
+                            modifier = Modifier.padding(innerPadding)
+                        )
+                    }
                 }
             }
         }

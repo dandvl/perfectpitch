@@ -71,5 +71,6 @@ class GameViewModel(private val soundPlayer: SoundPlayer) : ViewModel() {
     
     private fun dismissFeedback() {
         _state.value = _state.value.copy(feedback = null)
+        playRandomNote()
     }
 }

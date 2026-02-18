@@ -35,7 +35,8 @@ fun GameScreen(
         if (state.totalAttempts > 0) {
             ScoreSection(
                 score = state.score,
-                totalAttempts = state.totalAttempts
+                totalAttempts = state.totalAttempts,
+                bestScore = state.bestScore
             )
         }
         
@@ -47,19 +48,28 @@ fun GameScreen(
             color = MaterialTheme.colorScheme.primary
         )
         
-        // Play Button Section
-        PlayButtonSection(
-            isLoading = state.isLoading,
-            isPlaying = state.isPlaying,
-            onPlayClick = { viewModel.handleIntent(GameIntent.PlaySound) }
-        )
-        
-        // Options Section
-        if (state.isPlaying && state.options.isNotEmpty()) {
-            OptionsSection(
-                options = state.options,
-                onNoteSelected = { note -> viewModel.handleIntent(GameIntent.SelectNote(note)) }
+        // Game Over Section
+        if (state.isGameOver) {
+            GameOverSection(
+                score = state.score,
+                totalAttempts = state.totalAttempts,
+                onPlayAgain = { viewModel.handleIntent(GameIntent.PlayAgain) }
             )
+        } else {
+            // Play Button Section
+            PlayButtonSection(
+                isLoading = state.isLoading,
+                isPlaying = state.isPlaying,
+                onPlayClick = { viewModel.handleIntent(GameIntent.PlaySound) }
+            )
+            
+            // Options Section
+            if (state.isPlaying && state.options.isNotEmpty()) {
+                OptionsSection(
+                    options = state.options,
+                    onNoteSelected = { note -> viewModel.handleIntent(GameIntent.SelectNote(note)) }
+                )
+            }
         }
         
         // Feedback Section
@@ -70,8 +80,8 @@ fun GameScreen(
             )
         }
         
-        // Reset Button
-        if (state.totalAttempts > 0) {
+        // Reset Button (only show when not in game over)
+        if (state.totalAttempts > 0 && !state.isGameOver) {
             Button(
                 onClick = { viewModel.handleIntent(GameIntent.ResetGame) },
                 colors = ButtonDefaults.buttonColors(
@@ -87,7 +97,8 @@ fun GameScreen(
 @Composable
 fun ScoreSection(
     score: Int,
-    totalAttempts: Int
+    totalAttempts: Int,
+    bestScore: Int
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -141,6 +152,110 @@ fun ScoreSection(
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
+            }
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = "Best",
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = "$bestScore",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.tertiary
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun GameOverSection(
+    score: Int,
+    totalAttempts: Int,
+    onPlayAgain: () -> Unit
+) {
+    val isPerfectScore = score == totalAttempts && totalAttempts == 10
+    
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isPerfectScore) 
+                MaterialTheme.colorScheme.primaryContainer 
+            else 
+                MaterialTheme.colorScheme.surfaceVariant
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            if (isPerfectScore) {
+                Text(
+                    text = "🎉 PERFECT PITCH! 🎉",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    textAlign = TextAlign.Center
+                )
+                Text(
+                    text = "Congratulations! You have perfect pitch!",
+                    fontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    textAlign = TextAlign.Center
+                )
+            } else {
+                Text(
+                    text = "Game Over!",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center
+                )
+            }
+            
+            Text(
+                text = "Final Score: $score/$totalAttempts",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Medium,
+                color = if (isPerfectScore) 
+                    MaterialTheme.colorScheme.onPrimaryContainer 
+                else 
+                    MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
+            
+            Text(
+                text = "Accuracy: ${(score * 100 / totalAttempts)}%",
+                fontSize = 18.sp,
+                color = if (isPerfectScore) 
+                    MaterialTheme.colorScheme.onPrimaryContainer 
+                else 
+                    MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
+            
+            Button(
+                onClick = onPlayAgain,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (isPerfectScore)
+                        MaterialTheme.colorScheme.primary
+                    else
+                        MaterialTheme.colorScheme.secondary
+                )
+            ) {
+                Text(
+                    text = "Play Again",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }
@@ -273,7 +388,8 @@ fun ScoreSectionPreview() {
     PerfectPitchTheme {
         ScoreSection(
             score = 7,
-            totalAttempts = 10
+            totalAttempts = 10,
+            bestScore = 8
         )
     }
 }
@@ -284,7 +400,8 @@ fun ScoreSectionInitialPreview() {
     PerfectPitchTheme {
         ScoreSection(
             score = 0,
-            totalAttempts = 0
+            totalAttempts = 0,
+            bestScore = 0
         )
     }
 }

@@ -60,19 +60,21 @@ fun GameScreen(
             
             // Options Section
             OptionsSection(
+                optionsEnabled = state.feedback == null,
                 options = state.options,
                 onNoteSelected = { note -> viewModel.handleIntent(GameIntent.SelectNote(note)) }
             )
         }
-        
+
         // Feedback Section
         state.feedback?.let { feedback ->
             FeedbackSection(
                 feedback = feedback,
+                isGameOver = state.isGameOver,
                 onDismiss = { viewModel.handleIntent(GameIntent.DismissFeedback) }
             )
         }
-        
+
         // Reset Button (only show when not in game over)
         if (!state.isGameOver) {
             Button(
@@ -279,7 +281,8 @@ fun PlayButtonSection(
 @Composable
 fun OptionsSection(
     options: List<MusicalNote>,
-    onNoteSelected: (MusicalNote) -> Unit
+    onNoteSelected: (MusicalNote) -> Unit,
+    optionsEnabled: Boolean
 ) {
     Text(
         text = "Which note do you hear?",
@@ -299,7 +302,8 @@ fun OptionsSection(
                     .height(60.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondaryContainer
-                )
+                ),
+                enabled = optionsEnabled
             ) {
                 Text(
                     text = note.displayName,
@@ -313,8 +317,9 @@ fun OptionsSection(
 }
 
 @Composable
-fun FeedbackSection(
+private fun FeedbackSection(
     feedback: String,
+    isGameOver : Boolean,
     onDismiss: () -> Unit
 ) {
     val isCorrect = feedback.startsWith("Correct")
@@ -344,19 +349,20 @@ fun FeedbackSection(
                 else 
                     MaterialTheme.colorScheme.onErrorContainer
             )
-            
-            Spacer(modifier = Modifier.height(8.dp))
-            
-            Button(
-                onClick = onDismiss,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isCorrect)
-                        MaterialTheme.colorScheme.primary 
-                    else 
-                        MaterialTheme.colorScheme.error
-                )
-            ) {
-                Text("Continue")
+
+            if (!isGameOver) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(
+                    onClick = onDismiss,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (isCorrect)
+                            MaterialTheme.colorScheme.primary
+                        else
+                            MaterialTheme.colorScheme.error
+                    )
+                ) {
+                    Text("Continue")
+                }
             }
         }
     }
@@ -381,11 +387,13 @@ fun ScoreSectionPreview() {
             PlayButtonSection(false, false, {})
             OptionsSection(
                 options = listOf(MusicalNote.C, MusicalNote.E, MusicalNote.G),
-                onNoteSelected = {}
+                onNoteSelected = {},
+                optionsEnabled = true
             )
             FeedbackSection(
                 feedback = "Correct! The note was C",
-                onDismiss = {}
+                onDismiss = {},
+                isGameOver = false
             )
         }
     }
@@ -397,7 +405,8 @@ fun FeedbackSectionIncorrectPreview() {
     PerfectPitchTheme {
         FeedbackSection(
             feedback = "Wrong! The note was C",
-            onDismiss = {}
+            onDismiss = {},
+            isGameOver = false
         )
     }
 }

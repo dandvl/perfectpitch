@@ -18,7 +18,6 @@ sealed class GameIntent {
     data class SelectNote(val note: MusicalNote) : GameIntent()
     object ResetGame : GameIntent()
     object DismissFeedback : GameIntent()
-    object PlayAgain : GameIntent()
 }
 
 enum class MusicalNote(val displayName: String, val resourceName: String) {

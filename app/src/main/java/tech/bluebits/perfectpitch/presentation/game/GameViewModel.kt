@@ -46,7 +46,6 @@ class GameViewModel(
             is GameIntent.SelectNote -> checkAnswer(intent.note)
             is GameIntent.ResetGame -> resetGame()
             is GameIntent.DismissFeedback -> dismissFeedback()
-            is GameIntent.PlayAgain -> playAgain()
         }
     }
     
@@ -99,8 +98,5 @@ class GameViewModel(
             feedback = null, currentNote = randomNote, options = options
         )
     }
-    
-    private fun playAgain() {
-        _state.value = GameState(bestScore = scoreManager.getBestScore())
-    }
+
 }

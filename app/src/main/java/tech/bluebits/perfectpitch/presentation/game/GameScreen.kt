@@ -48,7 +48,7 @@ fun GameScreen(
             GameOverSection(
                 score = state.score,
                 totalAttempts = state.totalAttempts,
-                onPlayAgain = { viewModel.handleIntent(GameIntent.PlayAgain) }
+                onPlayAgain = onNavigateToWelcome
             )
         } else {
             // Play Button Section

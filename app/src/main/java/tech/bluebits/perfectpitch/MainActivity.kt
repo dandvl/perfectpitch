@@ -43,7 +43,8 @@ class MainActivity : ComponentActivity() {
                         GameScreen(
                             soundPlayer = soundPlayer,
                             modifier = Modifier.padding(innerPadding),
-                            viewModel = gameViewModel
+                            viewModel = gameViewModel,
+                            onNavigateToWelcome = { showGameScreen = false }
                         )
                     } else {
                         WelcomeScreen(

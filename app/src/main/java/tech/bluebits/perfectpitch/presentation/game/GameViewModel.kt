@@ -16,9 +16,32 @@ class GameViewModel(
 
     private val _state = MutableStateFlow(GameState(bestScore = scoreManager.getBestScore()))
     val state: StateFlow<GameState> = _state.asStateFlow()
-    
+
+    fun init() {
+        _state.value = _state.value.copy(isLoading = true)
+
+        val randomNote = getRandomNote()
+        val options = getRandomOptions(randomNote)
+
+        _state.value = _state.value.copy(
+            currentNote = randomNote,
+            options = options,
+            isPlaying = true,
+            feedback = null,
+            isLoading = false
+        )
+    }
+
+    private fun getRandomNote() = MusicalNote.entries.random()
+
+    private fun getRandomOptions(actualNote : MusicalNote) : List<MusicalNote> {
+        val otherNotes = MusicalNote.entries.filter { it != actualNote }.shuffled().take(MAX_OPTIONS)
+        return (listOf(actualNote) + otherNotes).shuffled()
+    }
+
     fun handleIntent(intent: GameIntent) {
         when (intent) {
+            is GameIntent.Init -> init()
             is GameIntent.PlaySound -> playRandomNote()
             is GameIntent.SelectNote -> checkAnswer(intent.note)
             is GameIntent.ResetGame -> resetGame()
@@ -29,23 +52,9 @@ class GameViewModel(
     
     private fun playRandomNote() {
         viewModelScope.launch {
-            _state.value = _state.value.copy(isLoading = true)
-            
-            val allNotes = MusicalNote.values()
-            val randomNote = allNotes.random()
-            
-            val otherNotes = allNotes.filter { it != randomNote }.shuffled().take(2)
-            val options = (listOf(randomNote) + otherNotes).shuffled()
-            
-            _state.value = _state.value.copy(
-                currentNote = randomNote,
-                options = options,
-                isPlaying = true,
-                feedback = null,
-                isLoading = false
-            )
-            
-            soundPlayer.playNote(randomNote)
+            _state.value.currentNote?.let {
+                soundPlayer.playNote(it)
+            }
         }
     }
     
@@ -67,7 +76,7 @@ class GameViewModel(
         if (isGameOver) {
             scoreManager.saveBestScore(newScore)
         }
-        
+
         _state.value = currentState.copy(
             score = newScore,
             totalAttempts = newTotalAttempts,
@@ -84,12 +93,11 @@ class GameViewModel(
     
     private fun dismissFeedback() {
         val currentState = _state.value
-        if (currentState.isGameOver) {
-            _state.value = currentState.copy(feedback = null)
-        } else {
-            _state.value = currentState.copy(feedback = null)
-            playRandomNote()
-        }
+        val randomNote = getRandomNote()
+        val options = getRandomOptions(randomNote)
+        _state.value = currentState.copy(
+            feedback = null, currentNote = randomNote, options = options
+        )
     }
     
     private fun playAgain() {

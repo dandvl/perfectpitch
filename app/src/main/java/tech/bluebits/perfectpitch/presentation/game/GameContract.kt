@@ -13,6 +13,7 @@ data class GameState(
 )
 
 sealed class GameIntent {
+    object Init : GameIntent()
     object PlaySound : GameIntent()
     data class SelectNote(val note: MusicalNote) : GameIntent()
     object ResetGame : GameIntent()

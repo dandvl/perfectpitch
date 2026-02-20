@@ -42,6 +42,16 @@ fun WelcomeScreen(
                 textAlign = TextAlign.Center
             )
             
+            // Game Instructions
+            Text(
+                text = "Listen to the musical notes and identify them correctly.\nTest your ear training skills and see how high you can score!",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal,
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+            
             // Start Game Button
             Button(
                 onClick = onStartGame,
@@ -85,10 +95,10 @@ fun WelcomeScreen(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = "$bestScore",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.tertiary
+                    text = "$bestScore / 10",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -106,13 +116,3 @@ fun WelcomeScreenPreview() {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun WelcomeScreenZeroScorePreview() {
-    PerfectPitchTheme {
-        WelcomeScreen(
-            bestScore = 0,
-            onStartGame = {}
-        )
-    }
-}

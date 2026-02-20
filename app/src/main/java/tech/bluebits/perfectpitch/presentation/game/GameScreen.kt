@@ -21,9 +21,14 @@ import tech.bluebits.perfectpitch.ui.theme.PerfectPitchTheme
 fun GameScreen(
     soundPlayer: SoundPlayer,
     modifier: Modifier = Modifier,
-    viewModel: GameViewModel
+    viewModel: GameViewModel,
+    onNavigateToWelcome: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.handleIntent(GameIntent.Init)
+    }
     
     Column(
         modifier = modifier
@@ -32,22 +37,12 @@ fun GameScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        if (state.totalAttempts > 0) {
-            ScoreSection(
-                score = state.score,
-                totalAttempts = state.totalAttempts,
-                bestScore = state.bestScore
-            )
-        }
-        
-        // Title
-        Text(
-            text = "Perfect Pitch Game",
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
+        ScoreSection(
+            score = state.score,
+            totalAttempts = state.totalAttempts,
+            bestScore = state.bestScore
         )
-        
+
         // Game Over Section
         if (state.isGameOver) {
             GameOverSection(
@@ -64,12 +59,10 @@ fun GameScreen(
             )
             
             // Options Section
-            if (state.isPlaying && state.options.isNotEmpty()) {
-                OptionsSection(
-                    options = state.options,
-                    onNoteSelected = { note -> viewModel.handleIntent(GameIntent.SelectNote(note)) }
-                )
-            }
+            OptionsSection(
+                options = state.options,
+                onNoteSelected = { note -> viewModel.handleIntent(GameIntent.SelectNote(note)) }
+            )
         }
         
         // Feedback Section
@@ -81,9 +74,9 @@ fun GameScreen(
         }
         
         // Reset Button (only show when not in game over)
-        if (state.totalAttempts > 0 && !state.isGameOver) {
+        if (!state.isGameOver) {
             Button(
-                onClick = { viewModel.handleIntent(GameIntent.ResetGame) },
+                onClick = onNavigateToWelcome,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondary
                 )
@@ -152,19 +145,6 @@ fun ScoreSection(
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
-            }
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = "Best",
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Text(
-                    text = "$bestScore",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.tertiary
-                )
             }
         }
     }
@@ -272,7 +252,7 @@ fun PlayButtonSection(
             modifier = Modifier.size(48.dp),
             color = MaterialTheme.colorScheme.primary
         )
-    } else if (!isPlaying) {
+    } else {
         Button(
             onClick = onPlayClick,
             modifier = Modifier
@@ -302,7 +282,7 @@ fun OptionsSection(
     onNoteSelected: (MusicalNote) -> Unit
 ) {
     Text(
-        text = "Which note did you hear?",
+        text = "Which note do you hear?",
         fontSize = 20.sp,
         fontWeight = FontWeight.Medium,
         color = MaterialTheme.colorScheme.onBackground
@@ -386,74 +366,30 @@ fun FeedbackSection(
 @Composable
 fun ScoreSectionPreview() {
     PerfectPitchTheme {
-        ScoreSection(
-            score = 7,
-            totalAttempts = 10,
-            bestScore = 8
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ScoreSectionInitialPreview() {
-    PerfectPitchTheme {
-        ScoreSection(
-            score = 0,
-            totalAttempts = 0,
-            bestScore = 0
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PlayButtonSectionPreview() {
-    PerfectPitchTheme {
-        PlayButtonSection(
-            isLoading = false,
-            isPlaying = false,
-            onPlayClick = {}
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PlayButtonSectionLoadingPreview() {
-    PerfectPitchTheme {
-        PlayButtonSection(
-            isLoading = true,
-            isPlaying = false,
-            onPlayClick = {}
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun OptionsSectionPreview() {
-    PerfectPitchTheme {
-        Column {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(24.dp)
+        ) {
+            ScoreSection(
+                score = 7,
+                totalAttempts = 10,
+                bestScore = 8
+            )
+            PlayButtonSection(false, false, {})
             OptionsSection(
                 options = listOf(MusicalNote.C, MusicalNote.E, MusicalNote.G),
                 onNoteSelected = {}
             )
+            FeedbackSection(
+                feedback = "Correct! The note was C",
+                onDismiss = {}
+            )
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun FeedbackSectionCorrectPreview() {
-    PerfectPitchTheme {
-        FeedbackSection(
-            feedback = "Correct! The note was C",
-            onDismiss = {}
-        )
-    }
-}
-
 
 @Preview(showBackground = true)
 @Composable

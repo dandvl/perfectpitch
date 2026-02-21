@@ -36,7 +36,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             PerfectPitchTheme {
                 var showGameScreen by remember { mutableStateOf(false) }
-                val bestScore = scoreManager.getBestScore()
                 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     if (showGameScreen) {
@@ -47,7 +46,7 @@ class MainActivity : ComponentActivity() {
                         )
                     } else {
                         WelcomeScreen(
-                            bestScore = bestScore,
+                            scoreManager = scoreManager,
                             onStartGame = {
                                 showGameScreen = true
                                 gameViewModel.init()

@@ -10,14 +10,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import tech.bluebits.perfectpitch.domain.ScoreManager
 import tech.bluebits.perfectpitch.ui.theme.PerfectPitchTheme
 
 @Composable
 fun WelcomeScreen(
-    bestScore: Int,
     onStartGame: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    scoreManager: ScoreManager
 ) {
+    val bestScore = scoreManager.getBestScore()
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -109,10 +112,11 @@ fun WelcomeScreen(
 @Composable
 fun WelcomeScreenPreview() {
     PerfectPitchTheme {
-        WelcomeScreen(
-            bestScore = 5,
-            onStartGame = {}
-        )
+//        WelcomeScreen(
+//
+//
+//            onStartGame = {},
+//        )
     }
 }
 

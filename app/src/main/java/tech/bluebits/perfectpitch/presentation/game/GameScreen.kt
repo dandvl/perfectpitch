@@ -24,10 +24,6 @@ fun GameScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        viewModel.handleIntent(GameIntent.Init)
-    }
-    
     Column(
         modifier = modifier
             .fillMaxSize()

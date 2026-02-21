@@ -24,14 +24,15 @@ class GameViewModel(
         val randomNote = getRandomNote()
         val options = getRandomOptions(randomNote)
 
-        Log.d("RMC", "random Note: $randomNote")
-
         _state.value = _state.value.copy(
             currentNote = randomNote,
             options = options,
-            isPlaying = true,
+            isPlaying = false,
             feedback = null,
-            isLoading = false
+            isLoading = false,
+            score = 0,
+            totalAttempts = 0,
+            isGameOver = false
         )
     }
 
@@ -97,7 +98,7 @@ class GameViewModel(
     private fun dismissFeedback() {
         val currentState = _state.value
         val randomNote = getRandomNote()
-        Log.d("RMC", "random Note: $randomNote")
+        Log.d("RMC", "dismiss random Note: $randomNote")
         val options = getRandomOptions(randomNote)
         _state.value = currentState.copy(
             feedback = null, currentNote = randomNote, options = options

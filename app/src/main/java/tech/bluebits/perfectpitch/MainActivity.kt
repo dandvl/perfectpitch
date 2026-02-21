@@ -41,7 +41,6 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     if (showGameScreen) {
                         GameScreen(
-                            soundPlayer = soundPlayer,
                             modifier = Modifier.padding(innerPadding),
                             viewModel = gameViewModel,
                             onNavigateToWelcome = { showGameScreen = false }
@@ -49,7 +48,10 @@ class MainActivity : ComponentActivity() {
                     } else {
                         WelcomeScreen(
                             bestScore = bestScore,
-                            onStartGame = { showGameScreen = true },
+                            onStartGame = {
+                                showGameScreen = true
+                                gameViewModel.init()
+                            },
                             modifier = Modifier.padding(innerPadding)
                         )
                     }
@@ -57,9 +59,9 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-    
-    override fun onDestroy() {
-        super.onDestroy()
+
+    override fun onPause() {
+        super.onPause()
         soundPlayer.release()
     }
 }

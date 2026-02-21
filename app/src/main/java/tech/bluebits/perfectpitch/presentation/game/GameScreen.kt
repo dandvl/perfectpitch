@@ -13,13 +13,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import tech.bluebits.perfectpitch.domain.SoundPlayer
 import tech.bluebits.perfectpitch.ui.theme.PerfectPitchTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameScreen(
-    soundPlayer: SoundPlayer,
     modifier: Modifier = Modifier,
     viewModel: GameViewModel,
     onNavigateToWelcome: () -> Unit
@@ -40,7 +38,6 @@ fun GameScreen(
         ScoreSection(
             score = state.score,
             totalAttempts = state.totalAttempts,
-            bestScore = state.bestScore
         )
 
         // Game Over Section
@@ -54,7 +51,6 @@ fun GameScreen(
             // Play Button Section
             PlayButtonSection(
                 isLoading = state.isLoading,
-                isPlaying = state.isPlaying,
                 onPlayClick = { viewModel.handleIntent(GameIntent.PlaySound) }
             )
             
@@ -92,8 +88,7 @@ fun GameScreen(
 @Composable
 fun ScoreSection(
     score: Int,
-    totalAttempts: Int,
-    bestScore: Int
+    totalAttempts: Int
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -246,7 +241,6 @@ fun GameOverSection(
 @Composable
 fun PlayButtonSection(
     isLoading: Boolean,
-    isPlaying: Boolean,
     onPlayClick: () -> Unit
 ) {
     if (isLoading) {
@@ -382,9 +376,8 @@ fun ScoreSectionPreview() {
             ScoreSection(
                 score = 7,
                 totalAttempts = 10,
-                bestScore = 8
             )
-            PlayButtonSection(false, false, {})
+            PlayButtonSection(false,{})
             OptionsSection(
                 options = listOf(MusicalNote.C, MusicalNote.E, MusicalNote.G),
                 onNoteSelected = {},

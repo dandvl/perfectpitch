@@ -1,5 +1,6 @@
 package tech.bluebits.perfectpitch.presentation.game
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +23,8 @@ class GameViewModel(
 
         val randomNote = getRandomNote()
         val options = getRandomOptions(randomNote)
+
+        Log.d("RMC", "random Note: $randomNote")
 
         _state.value = _state.value.copy(
             currentNote = randomNote,
@@ -73,6 +76,7 @@ class GameViewModel(
         val isGameOver = newTotalAttempts >= 10
         
         if (isGameOver) {
+            Log.d("RMC", "game over!")
             scoreManager.saveBestScore(newScore)
         }
 
@@ -93,6 +97,7 @@ class GameViewModel(
     private fun dismissFeedback() {
         val currentState = _state.value
         val randomNote = getRandomNote()
+        Log.d("RMC", "random Note: $randomNote")
         val options = getRandomOptions(randomNote)
         _state.value = currentState.copy(
             feedback = null, currentNote = randomNote, options = options

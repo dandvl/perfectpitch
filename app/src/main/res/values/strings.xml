@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">PerfectPitch</string>
+    
+    <!-- Welcome Screen -->
+    <string name="welcome_title">Perfect Pitch Game</string>
+    <string name="welcome_instructions">Listen to the musical notes and identify them correctly.\nTest your ear training skills and see how high you can score!</string>
+    <string name="start_game">Start Game</string>
+    <string name="best_score_prefix">Best Score: </string>
+    
+    <!-- Game Screen -->
+    <string name="reset_game">Reset Game</string>
+    <string name="score">Score</string>
+    <string name="attempts">Attempts</string>
+    <string name="accuracy">Accuracy</string>
+    <string name="perfect_pitch_title">🎉 PERFECT PITCH! 🎉</string>
+    <string name="perfect_pitch_message">Congratulations! You have perfect pitch!</string>
+    <string name="game_over">Game Over!</string>
+    <string name="final_score">Final Score: %1$d/%2$d</string>
+    <string name="accuracy_percentage">Accuracy: %1$d%%</string>
+    <string name="play_again">Play Again</string>
+    <string name="play_note">PLAY\nNOTE</string>
+    <string name="which_note_question">Which note do you hear?</string>
+    <string name="continue_button">Continue</string>
+    
+    <!-- Game Feedback -->
+    <string name="correct_feedback">Correct! The note was %1$s</string>
+    <string name="wrong_feedback">Wrong! The note was %1$s</string>
 </resources>

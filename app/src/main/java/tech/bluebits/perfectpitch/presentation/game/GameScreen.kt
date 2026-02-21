@@ -7,12 +7,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import tech.bluebits.perfectpitch.R
 import tech.bluebits.perfectpitch.ui.theme.PerfectPitchTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -75,7 +77,7 @@ fun GameScreen(
                     containerColor = MaterialTheme.colorScheme.secondary
                 )
             ) {
-                Text("Reset Game")
+                Text(stringResource(R.string.reset_game))
             }
         }
     }
@@ -100,7 +102,7 @@ fun ScoreSection(
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "Score",
+                    text = stringResource(R.string.score),
                     fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -113,7 +115,7 @@ fun ScoreSection(
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "Attempts",
+                    text = stringResource(R.string.attempts),
                     fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -127,7 +129,7 @@ fun ScoreSection(
             if (totalAttempts > 0) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "Accuracy",
+                        text = stringResource(R.string.accuracy),
                         fontSize = 16.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -169,21 +171,21 @@ fun GameOverSection(
         ) {
             if (isPerfectScore) {
                 Text(
-                    text = "🎉 PERFECT PITCH! 🎉",
+                    text = stringResource(R.string.perfect_pitch_title),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     textAlign = TextAlign.Center
                 )
                 Text(
-                    text = "Congratulations! You have perfect pitch!",
+                    text = stringResource(R.string.perfect_pitch_message),
                     fontSize = 18.sp,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     textAlign = TextAlign.Center
                 )
             } else {
                 Text(
-                    text = "Game Over!",
+                    text = stringResource(R.string.game_over),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -192,7 +194,7 @@ fun GameOverSection(
             }
             
             Text(
-                text = "Final Score: $score/$totalAttempts",
+                text = stringResource(R.string.final_score, score, totalAttempts),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Medium,
                 color = if (isPerfectScore) 
@@ -203,7 +205,7 @@ fun GameOverSection(
             )
             
             Text(
-                text = "Accuracy: ${(score * 100 / totalAttempts)}%",
+                text = stringResource(R.string.accuracy_percentage, (score * 100 / totalAttempts)),
                 fontSize = 18.sp,
                 color = if (isPerfectScore) 
                     MaterialTheme.colorScheme.onPrimaryContainer 
@@ -225,7 +227,7 @@ fun GameOverSection(
                 )
             ) {
                 Text(
-                    text = "Play Again",
+                    text = stringResource(R.string.play_again),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -258,7 +260,7 @@ fun PlayButtonSection(
             )
         ) {
             Text(
-                text = "PLAY\nNOTE",
+                text = stringResource(R.string.play_note),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
@@ -275,7 +277,7 @@ fun OptionsSection(
     optionsEnabled: Boolean
 ) {
     Text(
-        text = "Which note do you hear?",
+        text = stringResource(R.string.which_note_question),
         fontSize = 20.sp,
         fontWeight = FontWeight.Medium,
         color = MaterialTheme.colorScheme.onBackground
@@ -351,7 +353,7 @@ private fun FeedbackSection(
                             MaterialTheme.colorScheme.error
                     )
                 ) {
-                    Text("Continue")
+                    Text(stringResource(R.string.continue_button))
                 }
             }
         }

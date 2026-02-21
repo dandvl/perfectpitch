@@ -5,11 +5,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import tech.bluebits.perfectpitch.R
 import tech.bluebits.perfectpitch.ui.theme.PerfectPitchTheme
 
 @Composable
@@ -35,7 +37,7 @@ fun WelcomeScreen(
         ) {
             // Title
             Text(
-                text = "Perfect Pitch Game",
+                text = stringResource(R.string.welcome_title),
                 fontSize = 36.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,
@@ -44,7 +46,7 @@ fun WelcomeScreen(
             
             // Game Instructions
             Text(
-                text = "Listen to the musical notes and identify them correctly.\nTest your ear training skills and see how high you can score!",
+                text = stringResource(R.string.welcome_instructions),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Normal,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -63,7 +65,7 @@ fun WelcomeScreen(
                 )
             ) {
                 Text(
-                    text = "Start Game",
+                    text = stringResource(R.string.start_game),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onPrimary
@@ -89,13 +91,13 @@ fun WelcomeScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Best Score: ",
+                    text = stringResource(R.string.best_score_prefix),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = "$bestScore / 10",
+                    text = " $bestScore / 10",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
